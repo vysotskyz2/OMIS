@@ -11,7 +11,7 @@ DATABASE_PATH = 'adaptive_ui.db'
 
 # Session Configuration
 PERMANENT_SESSION_LIFETIME = timedelta(days=7)
-SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+SESSION_COOKIE_SECURE = False  
 SESSION_COOKIE_HTTPONLY = True
 SESSION_COOKIE_SAMESITE = 'Lax'
 
