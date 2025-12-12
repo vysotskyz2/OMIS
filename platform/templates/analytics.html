@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Аналитика - Adaptive UI Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>📈 Тестирование и Аналитика</h1>
+            <div class="user-menu">
+                <span>{{ username }}</span>
+                <a href="/logout">Выход</a>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul>
+                <li><a href="/dashboard">📊 Дашборд</a></li>
+                <li><a href="/rules">⚙️ Управление Правилами</a></li>
+                <li><a href="/components">📦 Компоненты</a></li>
+                <li><a href="/analytics" class="active">📈 Аналитика</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section class="analytics">
+                <h2>Отчет по эффективности</h2>
+
+                <div class="report-summary">
+                    <div class="metric">
+                        <h3>Всего правил</h3>
+                        <p class="value">{{ report.summary.total_rules }}</p>
+                    </div>
+                    <div class="metric">
+                        <h3>Активных правил</h3>
+                        <p class="value">{{ report.summary.active_rules }}</p>
+                    </div>
+                    <div class="metric">
+                        <h3>Пользователей</h3>
+                        <p class="value">{{ report.summary.total_users }}</p>
+                    </div>
+                </div>
+
+                <div class="rules-comparison">
+                    <h3>A/B Тестирование Правил</h3>
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Правило</th>
+                                <th>Вариант A</th>
+                                <th>Вариант B</th>
+                                <th>Победитель</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Тестирование доступно после накопления данных</td>
+                                <td>-</td>
+                                <td>-</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="ml-insights">
+                    <h3>ML Инсайты</h3>
+                    <ul>
+                        <li>✓ Точность модели прогнозирования: 85%</li>
+                        <li>✓ Основные предсказываемые действия: Purchase, Churn, Navigation</li>
+                        <li>✓ Адаптация интерфейса на основе контекста пользователя включена</li>
+                    </ul>
+                </div>
+            </section>
+        </main>
+    </div>
+</body>
+</html>

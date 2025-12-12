@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Дашборд - Adaptive UI Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>📊 Adaptive UI Platform - Дашборд</h1>
+            <div class="user-menu">
+                <span>{{ username }}</span>
+                <a href="/logout">Выход</a>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul>
+                <li><a href="/dashboard" class="active">📊 Дашборд</a></li>
+                <li><a href="/rules">⚙️ Управление Правилами</a></li>
+                <li><a href="/components">📦 Компоненты</a></li>
+                <li><a href="/analytics">📈 Аналитика</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section class="stats">
+                <h2>Статистика</h2>
+                <div class="stat-cards">
+                    <div class="card">
+                        <h3>{{ stats.total_rules }}</h3>
+                        <p>Всего правил</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ stats.active_rules }}</h3>
+                        <p>Активных правил</p>
+                    </div>
+                    <div class="card">
+                        <h3>{{ stats.total_users }}</h3>
+                        <p>Активных пользователей</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="recent-rules">
+                <h2>Недавние Правила</h2>
+                {% if rules %}
+                    <table class="rules-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Приоритет</th>
+                                <th>Статус</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rule in rules[:5] %}
+                            <tr>
+                                <td>{{ rule.id }}</td>
+                                <td>{{ rule.name }}</td>
+                                <td>{{ rule.priority }}</td>
+                                <td>
+                                    {% if rule.enabled %}
+                                        <span class="badge active">Активно</span>
+                                    {% else %}
+                                        <span class="badge inactive">Неактивно</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <a href="#" class="btn-small">Редактировать</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>Нет правил. <a href="/rules/create">Создать первое правило</a></p>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>

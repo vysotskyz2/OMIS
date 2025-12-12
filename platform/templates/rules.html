@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Управление Правилами - Adaptive UI Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="dashboard">
+        <header>
+            <h1>⚙️ Управление Правилами</h1>
+            <div class="user-menu">
+                <span>{{ username }}</span>
+                <a href="/logout">Выход</a>
+            </div>
+        </header>
+
+        <nav class="sidebar">
+            <ul>
+                <li><a href="/dashboard">📊 Дашборд</a></li>
+                <li><a href="/rules" class="active">⚙️ Управление Правилами</a></li>
+                <li><a href="/components">📦 Компоненты</a></li>
+                <li><a href="/analytics">📈 Аналитика</a></li>
+            </ul>
+        </nav>
+
+        <main class="content">
+            <section class="rules-management">
+                <div class="header-actions">
+                    <h2>Все Правила Адаптации</h2>
+                    <a href="/rules/create" class="btn btn-primary">+ Создать Правило</a>
+                </div>
+
+                {% if create_mode %}
+                    <form method="POST" class="rule-form">
+                        <h3>Создание нового правила</h3>
+
+                        <div class="form-group">
+                            <label>Название</label>
+                            <input type="text" name="name" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Описание</label>
+                            <textarea name="description"></textarea>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Тип устройства</label>
+                                <select name="device_type">
+                                    <option>Все</option>
+                                    <option>desktop</option>
+                                    <option>tablet</option>
+                                    <option>mobile</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Время суток</label>
+                                <select name="time_of_day">
+                                    <option>Все</option>
+                                    <option>morning</option>
+                                    <option>afternoon</option>
+                                    <option>evening</option>
+                                    <option>night</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label>Компоненты для отображения</label>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="components" value="quick_tasks"> Быстрые задачи</label>
+                                <label><input type="checkbox" name="components" value="cta_button"> CTA кнопка</label>
+                                <label><input type="checkbox" name="components" value="widget"> Виджет</label>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Приоритет</label>
+                                <input type="number" name="priority" value="1" min="1" max="100">
+                            </div>
+
+                            <div class="form-group">
+                                <label>Тема</label>
+                                <select name="theme">
+                                    <option>light</option>
+                                    <option>dark</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Сохранить Правило</button>
+                    </form>
+                {% else %}
+                    <table class="rules-table full-width">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Приоритет</th>
+                                <th>Статус</th>
+                                <th>Создано</th>
+                                <th>Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for rule in rules %}
+                            <tr>
+                                <td>#{{ rule.id }}</td>
+                                <td><strong>{{ rule.name }}</strong></td>
+                                <td>{{ rule.description[:50] }}</td>
+                                <td>{{ rule.priority }}</td>
+                                <td>
+                                    {% if rule.enabled %}
+                                        <span class="badge active">✓ Активно</span>
+                                    {% else %}
+                                        <span class="badge inactive">✗ Неактивно</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ rule.created_at }}</td>
+                                <td>
+                                    <a href="#" class="btn-small">Редактировать</a>
+                                    <a href="#" class="btn-small danger">Удалить</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endif %}
+            </section>
+        </main>
+    </div>
+</body>
+</html>
