@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Просмотр Компонента - Adaptive UI Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7fafc;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+        .user-menu a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .view-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .component-info {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .component-preview {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .info-row {
+            margin-bottom: 15px;
+        }
+        .info-label {
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        .info-value {
+            color: #4a5568;
+            word-break: break-all;
+        }
+        .preview-frame {
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 20px;
+            background: #fafafa;
+            min-height: 300px;
+        }
+        .code-block {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            padding: 15px;
+            margin-top: 10px;
+            overflow-x: auto;
+            font-size: 12px;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button, a.btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-edit {
+            background: #48bb78;
+            color: white;
+        }
+        .btn-edit:hover {
+            background: #38a169;
+        }
+        .btn-delete {
+            background: #f56565;
+            color: white;
+        }
+        .btn-delete:hover {
+            background: #e53e3e;
+        }
+        .btn-cancel {
+            background: #cbd5e0;
+            color: #2d3748;
+        }
+        .btn-cancel:hover {
+            background: #a0aec0;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            background: #667eea;
+            color: white;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        @media (max-width: 768px) {
+            .view-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>👁️ Просмотр Компонента</h1>
+        <div class="user-menu">
+            <a href="/components">Компоненты</a>
+            <a href="/dashboard">Дашборд</a>
+            <a href="/logout">Выход</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="view-container">
+            <div class="component-info">
+                <h2>Информация</h2>
+
+                <div class="info-row">
+                    <div class="info-label">Название</div>
+                    <div class="info-value">{{ component.name }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Тип</div>
+                    <div class="info-value">
+                        <span class="badge">{{ component.type }}</span>
+                    </div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Описание</div>
+                    <div class="info-value">{{ component.description }}</div>
+                </div>
+
+                <div class="info-row">
+                    <div class="info-label">Создано</div>
+                    <div class="info-value">{{ component.created_at }}</div>
+                </div>
+
+                <h2 style="margin-top: 30px;">HTML</h2>
+                <div class="code-block">{{ component.html_template }}</div>
+
+                <h2 style="margin-top: 30px;">CSS</h2>
+                <div class="code-block">{{ component.css_styles }}</div>
+
+                {% if component.js_script %}
+                <h2 style="margin-top: 30px;">JavaScript</h2>
+                <div class="code-block">{{ component.js_script }}</div>
+                {% endif %}
+
+                <div class="button-group">
+                    <a href="/components/{{ component.id }}/edit" class="btn btn-edit">✏️ Редактировать</a>
+                    <form method="POST" action="/components/{{ component.id }}/delete" style="margin: 0;">
+                        <button type="submit" class="btn btn-delete" onclick="return confirm('Вы уверены?')">🗑️ Удалить</button>
+                    </form>
+                    <a href="/components" class="btn btn-cancel">❌ Вернуться</a>
+                </div>
+            </div>
+
+            <div class="component-preview">
+                <h2>Предпросмотр</h2>
+                <div class="preview-frame">
+                    <style>{{ component.css_styles }}</style>
+                    {{ component.html_template | safe }}
+                    {% if component.js_script %}
+                    <script>{{ component.js_script }}</script>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="navbar">
+  <a href="/dashboard">📊 Дашборд</a>
+  <a href="/rules" class="active">⚙️ Правила</a>
+  <a href="/components">📦 Компоненты</a>
+  <a href="/analytics">📈 Аналитика</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px;">
+  <h1 style="margin: 0; color: #2d3748;">➕ Создание Правила</h1>
+  <div style="display: flex; gap: 10px;">
+    <a href="/rules" style="padding: 8px 16px; background: #f0f0f0; color: #667eea; border-radius: 4px; text-decoration: none;">⬅️ Вернуться</a>
+  </div>
+</div>
+
+<div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+  <h2 style="margin-bottom: 20px; color: #2d3748; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Новое Правило Адаптации</h2>
+  
+  <form method="POST" style="display: flex; flex-direction: column; gap: 0;">
+    <!-- Основные данные -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">Основные данные</h3>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Название правила *</label>
+        <input type="text" name="name" placeholder="например: Mobile Dark Mode" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Описание</label>
+        <textarea name="description" placeholder="Описание что делает это правило..." rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit; resize: vertical;"></textarea>
+      </div>
+    </div>
+
+    <!-- Условия срабатывания -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">Условия срабатывания</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Тип устройства</label>
+          <select name="device_type" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+            <option value="">Все устройства</option>
+            <option value="desktop">Desktop</option>
+            <option value="tablet">Tablet</option>
+            <option value="mobile">Mobile</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Время суток</label>
+          <select name="time_of_day" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+            <option value="">Все время</option>
+            <option value="morning">Утро (6:00-12:00)</option>
+            <option value="afternoon">День (12:00-18:00)</option>
+            <option value="evening">Вечер (18:00-22:00)</option>
+            <option value="night">Ночь (22:00-6:00)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Тип пользователя</label>
+        <select name="user_type" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+          <option value="">Все пользователи</option>
+          <option value="new">Новый пользователь</option>
+          <option value="regular">Постоянный пользователь</option>
+          <option value="vip">VIP пользователь</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Действия -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">Действия при срабатывании</h3>
+      
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+        <div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Тема оформления</label>
+          <select name="theme" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+            <option value="light">Светлая тема</option>
+            <option value="dark">Темная тема</option>
+            <option value="auto">Автоматически</option>
+          </select>
+        </div>
+
+        <div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Макет интерфейса</label>
+          <select name="layout" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+            <option value="compact">Компактный</option>
+            <option value="normal">Нормальный</option>
+            <option value="relaxed">Просторный</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Параметры -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">Параметры правила</h3>
+      
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Приоритет (1-100) *</label>
+        <input type="number" name="priority" value="10" min="1" max="100" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+        <small style="display: block; margin-top: 5px; color: #718096; font-size: 12px;">Правила с большим приоритетом применяются раньше</small>
+      </div>
+    </div>
+
+    <!-- Кнопки -->
+    <div style="display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+      <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s;">✅ Создать правило</button>
+      <a href="/rules" style="background: #e2e8f0; color: #2d3748; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block; cursor: pointer; font-weight: 500;">❌ Отменить</a>
+    </div>
+  </form>
+</div>
+
+<style>
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 3px rgba(102, 126, 234, 0.3);
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    div[style*="display: flex"][style*="flex-direction: column"] > div:last-child {
+      flex-direction: column;
+    }
+
+    button, a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+{% endblock %}

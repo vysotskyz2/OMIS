@@ -1,55 +1,55 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Библиотека Компонентов - Adaptive UI Platform</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-</head>
-<body>
-    <div class="dashboard">
-        <header>
-            <h1>📦 Библиотека Компонентов</h1>
-            <div class="user-menu">
-                <span>{{ username }}</span>
-                <a href="/logout">Выход</a>
-            </div>
-        </header>
+{% extends "base.html" %}
 
-        <nav class="sidebar">
-            <ul>
-                <li><a href="/dashboard">📊 Дашборд</a></li>
-                <li><a href="/rules">⚙️ Управление Правилами</a></li>
-                <li><a href="/components" class="active">📦 Компоненты</a></li>
-                <li><a href="/analytics">📈 Аналитика</a></li>
-            </ul>
-        </nav>
+{% block content %}
+<div class="navbar">
+  <a href="/dashboard">📊 Дашборд</a>
+  <a href="/rules">⚙️ Правила</a>
+  <a href="/components" class="active">📦 Компоненты</a>
+  <a href="/analytics">📈 Аналитика</a>
+</div>
 
-        <main class="content">
-            <section class="components-library">
-                <h2>Компоненты пользовательского интерфейса</h2>
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px;">
+  <h1 style="margin: 0; color: #2d3748;">📦 Библиотека Компонентов</h1>
+  <div style="display: flex; gap: 10px;">
+    <a href="/components/create" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; cursor: pointer; font-weight: 500; transition: all 0.3s; display: inline-block;">+ Создать компонент</a>
+  </div>
+</div>
 
-                <div class="components-grid">
-                    {% for component in components %}
-                    <div class="component-card">
-                        <div class="card-header">
-                            <h3>{{ component.name }}</h3>
-                            <span class="badge">{{ component.type }}</span>
-                        </div>
-                        <p class="description">{{ component.description }}</p>
-                        <div class="preview">
-                            <pre><code>{{ component.html_template[:100] }}...</code></pre>
-                        </div>
-                        <div class="card-actions">
-                            <button class="btn-small">Просмотр</button>
-                            <button class="btn-small">Редактировать</button>
-                            <button class="btn-small danger">Удалить</button>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-            </section>
-        </main>
+{% if components %}
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px;">
+    {% for component in components %}
+    <div style="background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08); padding: 20px; transition: all 0.3s;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+        <h3 style="margin: 0; color: #2d3748; font-size: 16px; font-weight: 600;">{{ component.name }}</h3>
+        <span style="display: inline-block; padding: 4px 12px; background: #667eea; color: white; border-radius: 12px; font-size: 12px; font-weight: 600; white-space: nowrap;">{{ component.type }}</span>
+      </div>
+
+      <p style="color: #718096; font-size: 14px; margin-bottom: 15px; min-height: 40px;">{{ component.description }}</p>
+
+      <div style="background: #f7fafc; padding: 10px; border-radius: 4px; margin-bottom: 15px; font-size: 12px; color: #4a5568; font-family: 'Courier New', monospace; white-space: pre-wrap; word-break: break-all; max-height: 80px; overflow: hidden;">{{ component.html_template[:100] }}{% if component.html_template|length > 100 %}...{% endif %}</div>
+
+      <div style="display: flex; gap: 8px; border-top: 1px solid #e2e8f0; padding-top: 15px; margin-top: 15px;">
+        <a href="/components/{{ component.id }}/view" style="flex: 1; padding: 8px 12px; background: #4299e1; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-weight: 500; text-align: center;">👁️ Просмотр</a>
+        <a href="/components/{{ component.id }}/edit" style="flex: 1; padding: 8px 12px; background: #48bb78; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; justify-content: center; gap: 5px; font-weight: 500; text-align: center;">✏️ Редакт.</a>
+        <form method="POST" action="/components/{{ component.id }}/delete" style="flex: 1; margin: 0;" onsubmit="return confirm('Вы уверены что хотите удалить этот компонент?');">
+          <button type="submit" style="flex: 1; padding: 8px 12px; background: #f56565; color: white; border: none; border-radius: 4px; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; font-weight: 500; width: 100%;">🗑️ Удалить</button>
+        </form>
+      </div>
     </div>
-</body>
-</html>
+    {% endfor %}
+  </div>
+{% else %}
+  <div style="text-align: center; padding: 60px 20px; color: #718096; background: white; border-radius: 8px;">
+    <h3 style="margin-bottom: 10px; color: #2d3748; font-size: 18px;">Нет компонентов</h3>
+    <p style="margin-bottom: 20px; color: #718096;">Создайте первый компонент для начала работы</p>
+    <a href="/components/create" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; cursor: pointer; font-weight: 500; display: inline-block;">+ Создать первый компонент</a>
+  </div>
+{% endif %}
+
+<style>
+  div[style*="grid-template-columns"] > div:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    transform: translateY(-3px);
+  }
+</style>
+{% endblock %}

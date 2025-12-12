@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование Правила - Adaptive UI Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7fafc;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+        .user-menu a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .edit-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+        input[type="text"],
+        input[type="number"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102,126,234,0.3);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .checkbox-group input {
+            width: auto;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        .btn-cancel:hover {
+            background: #cbd5e0;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✏️ Редактирование Правила</h1>
+        <div class="user-menu">
+            <a href="/dashboard">Дашборд</a>
+            <a href="/logout">Выход</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <form method="POST" class="edit-form">
+            <h2>Изменить Правило: {{ rule.name }}</h2>
+
+            <div class="form-group">
+                <label>Название</label>
+                <input type="text" name="name" value="{{ rule.name }}" required>
+            </div>
+
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea name="description" rows="3">{{ rule.description or '' }}</textarea>
+            </div>
+
+            <h2 style="margin-top: 30px;">Условия срабатывания</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Тип устройства</label>
+                    <select name="device_type">
+                        <option value="">Все</option>
+                        <option value="desktop" {% if rule.conditions.get('device_type') == 'desktop' %}selected{% endif %}>Desktop</option>
+                        <option value="tablet" {% if rule.conditions.get('device_type') == 'tablet' %}selected{% endif %}>Tablet</option>
+                        <option value="mobile" {% if rule.conditions.get('device_type') == 'mobile' %}selected{% endif %}>Mobile</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Время суток</label>
+                    <select name="time_of_day">
+                        <option value="">Все</option>
+                        <option value="morning" {% if rule.conditions.get('time_of_day') == 'morning' %}selected{% endif %}>Утро</option>
+                        <option value="afternoon" {% if rule.conditions.get('time_of_day') == 'afternoon' %}selected{% endif %}>День</option>
+                        <option value="evening" {% if rule.conditions.get('time_of_day') == 'evening' %}selected{% endif %}>Вечер</option>
+                        <option value="night" {% if rule.conditions.get('time_of_day') == 'night' %}selected{% endif %}>Ночь</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Тип пользователя</label>
+                <select name="user_type">
+                    <option value="">Все</option>
+                    <option value="new" {% if rule.conditions.get('user_type') == 'new' %}selected{% endif %}>Новый</option>
+                    <option value="regular" {% if rule.conditions.get('user_type') == 'regular' %}selected{% endif %}>Постоянный</option>
+                    <option value="vip" {% if rule.conditions.get('user_type') == 'vip' %}selected{% endif %}>VIP</option>
+                </select>
+            </div>
+
+            <h2 style="margin-top: 30px;">Действия при срабатывании</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Тема</label>
+                    <select name="theme">
+                        <option value="light" {% if rule.actions.get('theme') == 'light' %}selected{% endif %}>Светлая</option>
+                        <option value="dark" {% if rule.actions.get('theme') == 'dark' %}selected{% endif %}>Темная</option>
+                        <option value="auto" {% if rule.actions.get('theme') == 'auto' %}selected{% endif %}>Автоматически</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Макет</label>
+                    <select name="layout">
+                        <option value="compact" {% if rule.actions.get('layout') == 'compact' %}selected{% endif %}>Компактный</option>
+                        <option value="normal" {% if rule.actions.get('layout') == 'normal' %}selected{% endif %}>Нормальный</option>
+                        <option value="relaxed" {% if rule.actions.get('layout') == 'relaxed' %}selected{% endif %}>Просторный</option>
+                    </select>
+                </div>
+            </div>
+
+            <h2 style="margin-top: 30px;">Параметры</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Приоритет</label>
+                    <input type="number" name="priority" value="{{ rule.priority }}" min="1" max="100" required>
+                </div>
+
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" name="enabled" id="enabled" {% if rule.enabled %}checked{% endif %}>
+                    <label for="enabled" style="margin: 0;">Активно</label>
+                </div>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-save">💾 Сохранить изменения</button>
+                <a href="/rules" class="btn-cancel" style="padding: 10px 20px; text-decoration: none; display: inline-block;">❌ Отменить</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

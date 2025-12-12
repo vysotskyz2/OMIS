@@ -1,0 +1,124 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="navbar">
+  <a href="/dashboard">📊 Дашборд</a>
+  <a href="/rules">⚙️ Правила</a>
+  <a href="/components" class="active">📦 Компоненты</a>
+  <a href="/analytics">📈 Аналитика</a>
+</div>
+
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; gap: 20px;">
+  <h1 style="margin: 0; color: #2d3748;">➕ Создание Компонента</h1>
+  <div style="display: flex; gap: 10px;">
+    <a href="/components" style="padding: 8px 16px; background: #f0f0f0; color: #667eea; border-radius: 4px; text-decoration: none;">⬅️ Вернуться</a>
+  </div>
+</div>
+
+<div style="background: white; border-radius: 8px; padding: 30px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);">
+  <h2 style="margin-bottom: 20px; color: #2d3748; border-bottom: 2px solid #667eea; padding-bottom: 10px;">Новый UI Компонент</h2>
+
+  <form method="POST" style="display: flex; flex-direction: column; gap: 0;">
+    <!-- Основные данные -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">Основные данные</h3>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Название компонента *</label>
+        <input type="text" name="name" placeholder="например: Кнопка оплаты" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+        <div>
+          <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Тип компонента *</label>
+          <select name="type" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit;">
+            <option value="">Выберите тип</option>
+            <option value="widget">Widget (Виджет)</option>
+            <option value="button">Button (Кнопка)</option>
+            <option value="card">Card (Карточка)</option>
+            <option value="form">Form (Форма)</option>
+            <option value="modal">Modal (Модальное окно)</option>
+            <option value="alert">Alert (Уведомление)</option>
+            <option value="navigation">Navigation (Навигация)</option>
+            <option value="other">Other (Другое)</option>
+          </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">Описание</label>
+        <textarea name="description" placeholder="Описание компонента..." rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: inherit; resize: vertical;"></textarea>
+      </div>
+    </div>
+
+    <!-- HTML Шаблон -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">HTML Шаблон</h3>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">HTML код *</label>
+        <textarea name="html_template" placeholder='<div class="button">Нажми меня</div>' rows="8" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: 'Courier New', monospace; resize: vertical;"></textarea>
+        <small style="display: block; margin-top: 5px; color: #718096; font-size: 12px;">Пример: &lt;button class="btn-primary"&gt;Купить&lt;/button&gt;</small>
+      </div>
+    </div>
+
+    <!-- CSS Стили -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">CSS Стили</h3>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">CSS код *</label>
+        <textarea name="css_styles" placeholder='.btn-primary { background: #667eea; color: white; padding: 10px 20px; border: none; border-radius: 4px; cursor: pointer; }' rows="8" required style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: 'Courier New', monospace; resize: vertical;"></textarea>
+        <small style="display: block; margin-top: 5px; color: #718096; font-size: 12px;">Пример: .btn-primary { background: #667eea; padding: 10px 20px; }</small>
+      </div>
+    </div>
+
+    <!-- JavaScript -->
+    <div style="margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0;">
+      <h3 style="margin-bottom: 15px; color: #2d3748; font-size: 16px; font-weight: 600;">JavaScript (опционально)</h3>
+
+      <div style="margin-bottom: 15px;">
+        <label style="display: block; margin-bottom: 5px; font-weight: 500; color: #2d3748; font-size: 14px;">JavaScript код</label>
+        <textarea name="js_script" placeholder='document.querySelectorAll(".btn-primary").forEach(btn => { btn.addEventListener("click", () => alert("Кликнуто!")); });' rows="8" style="width: 100%; padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 4px; font-size: 14px; font-family: 'Courier New', monospace; resize: vertical;"></textarea>
+        <small style="display: block; margin-top: 5px; color: #718096; font-size: 12px;">Пример: document.querySelector(".btn").addEventListener("click", function() { ... });</small>
+      </div>
+    </div>
+
+    <!-- Кнопки -->
+    <div style="display: flex; gap: 10px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e2e8f0;">
+      <button type="submit" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 10px 20px; border: none; border-radius: 4px; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.3s;">✅ Создать компонент</button>
+      <a href="/components" style="background: #e2e8f0; color: #2d3748; padding: 10px 20px; border: none; border-radius: 4px; text-decoration: none; display: inline-block; cursor: pointer; font-weight: 500;">❌ Отменить</a>
+    </div>
+  </form>
+</div>
+
+<style>
+  input:focus,
+  select:focus,
+  textarea:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 3px rgba(102, 126, 234, 0.3);
+  }
+
+  button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  }
+
+  @media (max-width: 768px) {
+    div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+
+    div[style*="display: flex"][style*="flex-direction: column"] > div:last-child {
+      flex-direction: column;
+    }
+
+    button, a {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+{% endblock %}

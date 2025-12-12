@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Редактирование Компонента - Adaptive UI Platform</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f7fafc;
+            color: #2d3748;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        header {
+            background: white;
+            padding: 20px;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 30px;
+            border-radius: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            color: #667eea;
+            font-size: 24px;
+        }
+        .user-menu a {
+            color: #667eea;
+            text-decoration: none;
+            margin-left: 20px;
+            padding: 8px 16px;
+            background: #f0f0f0;
+            border-radius: 4px;
+        }
+        .edit-form {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2d3748;
+        }
+        input[type="text"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #e2e8f0;
+            border-radius: 4px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+        input[type="text"]:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102,126,234,0.3);
+        }
+        textarea {
+            resize: vertical;
+            min-height: 150px;
+            font-family: 'Courier New', monospace;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        .btn-save {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+        .btn-cancel {
+            background: #e2e8f0;
+            color: #2d3748;
+        }
+        .btn-cancel:hover {
+            background: #cbd5e0;
+        }
+        h2 {
+            margin-bottom: 20px;
+            color: #2d3748;
+            border-bottom: 2px solid #667eea;
+            padding-bottom: 10px;
+        }
+        .code-info {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-size: 12px;
+            color: #4a5568;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>✏️ Редактирование Компонента</h1>
+        <div class="user-menu">
+            <a href="/components">Компоненты</a>
+            <a href="/logout">Выход</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <form method="POST" class="edit-form">
+            <h2>Изменить Компонент: {{ component.name }}</h2>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" name="name" value="{{ component.name }}" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Тип</label>
+                    <select name="type" required>
+                        <option value="widget" {% if component.type == 'widget' %}selected{% endif %}>Widget (Виджет)</option>
+                        <option value="button" {% if component.type == 'button' %}selected{% endif %}>Button (Кнопка)</option>
+                        <option value="card" {% if component.type == 'card' %}selected{% endif %}>Card (Карточка)</option>
+                        <option value="form" {% if component.type == 'form' %}selected{% endif %}>Form (Форма)</option>
+                        <option value="modal" {% if component.type == 'modal' %}selected{% endif %}>Modal (Модальное окно)</option>
+                        <option value="other" {% if component.type == 'other' %}selected{% endif %}>Other (Другое)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea name="description" placeholder="Описание компонента...">{{ component.description or '' }}</textarea>
+            </div>
+
+            <h2 style="margin-top: 30px;">HTML Шаблон</h2>
+            <div class="code-info">
+                📝 Введите HTML код компонента. Используйте классы CSS для стилизации.
+            </div>
+            <div class="form-group">
+                <label>HTML</label>
+                <textarea name="html_template" placeholder="&lt;div class='my-component'&gt;...&lt;/div&gt;">{{ component.html_template }}</textarea>
+            </div>
+
+            <h2 style="margin-top: 30px;">CSS Стили</h2>
+            <div class="code-info">
+                🎨 Введите CSS для стилизации компонента. Используйте селекторы .my-component и т.д.
+            </div>
+            <div class="form-group">
+                <label>CSS</label>
+                <textarea name="css_styles" placeholder=".my-component { /* стили */ }">{{ component.css_styles }}</textarea>
+            </div>
+
+            <h2 style="margin-top: 30px;">JavaScript (опционально)</h2>
+            <div class="code-info">
+                ⚙️ JavaScript код для интерактивности компонента (опционально).
+            </div>
+            <div class="form-group">
+                <label>JavaScript</label>
+                <textarea name="js_script" placeholder="// код JavaScript...">{{ component.js_script or '' }}</textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-save">💾 Сохранить изменения</button>
+                <a href="/components" class="btn-cancel" style="padding: 10px 20px; text-decoration: none; display: inline-block;">❌ Отменить</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
